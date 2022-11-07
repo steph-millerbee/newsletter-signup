@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const https = require("https");
 const bodyParser = require("body-parser");
@@ -5,13 +7,12 @@ const mailchimp = require("@mailchimp/mailchimp_marketing");
 
 const app = express();
 
-const audienceId = "5aa715cfb4";
-const server = "us14"
-
+const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+const server = process.env.SERVER;
 
 
 mailchimp.setConfig({
-  apiKey: "2f48967bdadb22e6c83cb92ef61b9c76-us14",
+  apiKey: process.env.MAILCHIMP_API_KEY,
   server: server,
 });
 
@@ -47,7 +48,7 @@ app.post("/", function(req, res) {
 
   const options = {
     method: "POST",
-    auth: "stephanie8:2f48967bdadb22e6c83cb92ef61b9c76-us14"
+    auth: "stephanie8:" + process.env.MAILCHIMP_API_KEY
   }
 
   const request = https.request(url, options, function(response) {
@@ -76,3 +77,4 @@ app.listen(process.env.PORT || 3000, function() { //listening on heroku port and
   console.log("Server is running on port 3000")
 });
 
+//the procfile contains the commands of code that are to be run by the host server  
